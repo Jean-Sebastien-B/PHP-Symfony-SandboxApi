@@ -1,0 +1,67 @@
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+
+    providers:
+        token_provider:
+            entity:
+                class: App\Entity\User
+                property: apiToken
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: true
+            lazy: true
+            provider: token_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+            logout:
+                path: /logout
+                target: /login
+
+        login:
+            pattern: ^/login
+            stateless: true
+            anonymous: true
+            provider: token_provider
+            logout: 
+                path: /logout
+                target: /login
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+
+        api:
+            pattern: ^/api
+            stateless: true
+            anonymous: false
+            provider: token_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+
+        admin:
+            pattern: ^/admin
+            stateless: true
+            anonymous: false
+            provider: token_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+
+
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY } #route login_check vers page d'authentifiaction
+        - { path: ^/logout, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: ROLE_ADMIN } #route vers doc swagger api platform
+        - { path: ^/admin, roles: ROLE_ADMIN } #route vers dashboard

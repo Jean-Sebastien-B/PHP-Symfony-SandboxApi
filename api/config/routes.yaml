@@ -1,0 +1,17 @@
+login:
+  path: /login
+  controller: App\Controller\SecurityController::login
+
+logout:
+  path: /logout
+
+#route vers doc swagger api platform
+api:
+  path: /api
+  controller: api_platform.swagger.action.ui
+
+#route vers dashboard
+admin:
+  path: /admin
+  controller: App\Controller\Admin\DashboardController::index
+

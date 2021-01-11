@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion BackEnd
+{% endblock %}
+
+{% block body %}
+	<style>
+		form {
+			width: 100%;
+		}
+		input::placeholder {
+			font-size: 1em;
+			font-style: italic;
+		}
+		thead {
+			text-align: center;
+		}
+		label {
+			font-family: Georgia, serif;
+		}
+		pre {
+			font-family: Georgia, serif;
+			text-align: center;
+			font-style: italic;
+		}
+		hr {
+			margin-top: 1rem;
+			margin-bottom: 1rem;
+			border: 0;
+			border-top: 1px solid rgba(0, 0, 0, 0.1);
+		}
+		h1 {
+			text-align: center !important;
+			font-family: Georgia, serif;
+			margin-top: 10px;
+		}
+		p {
+			text-align: center !important;
+			font-family: Georgia, serif;
+			margin-top: 10px;
+		}
+		button {
+			text-align: center !important;
+			font-family: Georgia, serif;
+			margin-top: 10px;
+		}
+		.form-signin {
+			width: 100%;
+			max-width: 330px;
+			padding: 15px;
+			margin: 50px auto auto;
+		}
+		.form-signin .form-control {
+			position: relative;
+			box-sizing: border-box;
+			height: auto;
+			padding: 10px;
+			font-size: 16px;
+		}
+		.form-signin .form-control:focus {
+			z-index: 2;
+		}
+		.form-signin input[type="text"] {
+			border-bottom-right-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+		.form-signin input[type="password"] {
+			margin-top: 2px;
+			margin-bottom: 10px;
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+	</style>
+
+	<div class="jumbotron jumbotron-fluid">
+		<div class="container">
+			<h1 class="title display-6">Connexion BackEnd</h1>
+			<p class="sub-title">'Accès sécurisé à la documentation de l'API et au Dashboard'</p>
+		</div>
+	</div>
+
+	{% if app.user and is_granted('ROLE_ADMIN') %}
+		<hr>
+
+		<div class="container-fluid">
+			<div class="row justify-content-md-center">
+				<div class="col-md-2"></div>
+				<div class="col-md-2">
+					<a class="btn btn-dark btn-block" href="{{ path('api') }}">API Doc</a>
+				</div>
+				<div class="col-md-4"></div>
+				<div class="col-md-2">
+					<a class="btn btn-dark btn-block" href="{{ path('admin') }}">Dashboard</a>
+				</div>
+				<div class="col-md-2"></div>
+			</div>
+		</div>
+
+		<hr>
+	{% endif %}
+
+	<div class="container-fluid">
+		<div class="row justify-content-md-center">
+			<form class="form-signin" method="post">
+				{% if error %}
+					<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+				{% endif %}
+
+				{% if app.user %}
+					<div class="col-md-12">
+						<p>
+							{{ app.user.username }}
+							est connecté
+						</p>
+						<a class="btn btn-lg btn-dark btn-block" href="{{ path('logout') }}">Déconnexion</a>
+					</div>
+				{% endif %}
+
+				<div class="col-md-12">
+					<br>
+					<label for="inputUsername"></label>
+					<input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus placeholder="Nom d'utilisateur">
+					<label for="inputPassword">
+					</label><input type="password" name="password" id="inputPassword" class="form-control" required placeholder="Mot de passe">
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+					<button class="btn btn-lg btn-dark btn-block" type="submit">Valider</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<hr>
+
+{% endblock %}
