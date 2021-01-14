@@ -38,7 +38,7 @@ Installation de Symfony (sous Windows)</br>
   `https://symfony.com/download`</br>
 
 Installation de Composer</br>
-  `https://getcomposer.org/download/`</br>
+`https://getcomposer.org/Composer-Setup.exe`</br>
 
 La base de données fournies est de type MySQL. Le plus simple est d'installer WampServer64.</br>
   `https://www.wampserver.com/en/download-wampserver-64bits/`</br>
